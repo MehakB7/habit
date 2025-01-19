@@ -22,7 +22,17 @@ import { lang } from '@/lib/lang';
 import { TARGET_TYPE_OPTIONS, COLOR_OPTIONS } from '@/lib/constants';
 import { useHabitContext } from "../HabitContext";
 import { HabitType } from "../HabitTable/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const defaultValue={
+  name: "",
+  question: "",
+  unit: "",
+  target: "0",
+  targetType: "At Most" as "At Most" | "At Least",
+  measurable: HabitType.NO,
+  color: "rose",
+}
 
 export function CreateHabitModal() {
 
@@ -34,18 +44,15 @@ export function CreateHabitModal() {
     watch,
     reset,
   } = useForm({
-    defaultValues: {
-      name: "",
-      question: "",
-      unit: "",
-      target: "0",
-      targetType: "At Most" as "At Most" | "At Least",
-      measurable: HabitType.NO,
-      color: "rose",
-    },
+    defaultValues: {...defaultValue},
     resolver: zodResolver(schema),
   });
 
+
+  useEffect(()=>{
+    reset({...defaultValue});
+  },
+  [open]);
   const { habits, setHabits } = useHabitContext();
 
   const isMeasurable = watch("measurable") === HabitType.YES;
@@ -60,7 +67,8 @@ export function CreateHabitModal() {
       measurable: data.measurable as HabitType,
     };
     setHabits([...habits, newHabit]);
-    reset();
+    reset({...defaultValue,
+    },);
     setOpen(false);
   };
 
