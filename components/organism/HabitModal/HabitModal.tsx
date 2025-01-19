@@ -20,9 +20,13 @@ import SelectBox from "@/components/molecules/selectBox";
 import { ErrorMessage } from "@/components/ui/errorMessage";
 import { lang } from '@/lib/lang';
 import { TARGET_TYPE_OPTIONS, COLOR_OPTIONS } from '@/lib/constants';
-import useLocalStorage from "@/lib/hooks/useLocalStorage";
+import { useHabitContext } from "../HabitContext";
+import { HabitType } from "../HabitTable/types";
+import { useState } from "react";
 
 export function CreateHabitModal() {
+
+  const [open, setOpen] = useState(false);
   const {
     control,
     handleSubmit,
@@ -34,36 +38,36 @@ export function CreateHabitModal() {
       name: "",
       question: "",
       unit: "",
-      target: 0,
+      target: "0",
       targetType: "At Most" as "At Most" | "At Least",
-      isMeasurable: "no" as "yes" | "no",
+      measurable: HabitType.NO,
       color: "rose",
     },
     resolver: zodResolver(schema),
   });
 
-  const [habits, setHabits] = useLocalStorage('habits', []);
+  const { habits, setHabits } = useHabitContext();
 
-
-  const isMeasurable = watch("isMeasurable") === "yes";
+  const isMeasurable = watch("measurable") === HabitType.YES;
 
   const onSubmit = (data: z.infer<typeof schema>) => {
+
     const newHabit = {
       ...data,
       id: uuidv4(),
       createdAt: new Date(),
       value: [],
+      measurable: data.measurable as HabitType,
     };
     setHabits([...habits, newHabit]);
     reset();
-
-    console.log(newHabit);
+    setOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">{lang.CREATE_HABIT_BUTTON}</Button>
+        <Button variant="outline" onClick={()=>setOpen(true)}>{lang.CREATE_HABIT_BUTTON}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -99,7 +103,7 @@ export function CreateHabitModal() {
             <div>
               <label>{lang.IS_MEASURABLE_LABEL}</label>
               <Controller
-                name="isMeasurable"
+                name="measurable"
                 control={control}
                 render={({ field }) => (
                   <RadioButton
@@ -113,8 +117,8 @@ export function CreateHabitModal() {
                   />
                 )}
               />
-              {errors.isMeasurable && (
-                <ErrorMessage message={"" + errors?.isMeasurable?.message} />
+              {errors.measurable && (
+                <ErrorMessage message={"" + errors?.measurable?.message} />
               )}
             </div>
 
@@ -180,7 +184,7 @@ export function CreateHabitModal() {
                 )}
               />
             </div>
-            <Button type="submit">{lang.SUBMIT_BUTTON}</Button>
+             <Button type="submit">{lang.SUBMIT_BUTTON}</Button>  
           </form>
         </div>
       </DialogContent>
