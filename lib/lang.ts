@@ -5,7 +5,7 @@ export const lang = {
   CREATE_HABIT_DESCRIPTION: "Create a new habit to track your progress.",
   HABIT_NAME_LABEL: "Habit Name",
   HABIT_NAME_PLACEHOLDER: "eg: Walk 10,000 steps",
-  HABIT_DESCRIPTION_LABEL: "Description",
+  HABIT_DESCRIPTION_LABEL: "Question",
   HABIT_DESCRIPTION_PLACEHOLDER: "eg: Am I healthy",
   IS_MEASURABLE_LABEL: "Is it a measurable habit?",
   UNIT_LABEL: "Unit",
