@@ -30,3 +30,8 @@ export const COLOR_OPTIONS = [
     className: "bg-yellow-500 py-2 focus:bg-yellow-200",
   },
 ];
+
+export const YES_NO_OPTIONS = [
+  { value: "1", label: "Yes" },
+  { value: "0", label: "No" },
+];

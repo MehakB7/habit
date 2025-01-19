@@ -18,4 +18,8 @@ export const lang = {
   YES_OPTION: "Yes",
   NO_OPTION: "No",
   SELECT_TARGET_TYPE_PLACEHOLDER: "Select Target Type",
+  NOTE_PLACEHOLDER: "Note",
+  VALUE_PLACEHOLDER: "eg: 50",
+  SAVE_BUTTON: "Save",
+  DID_YOU_CRUSH_IT_LABEL: "Did you crush it?",
 };
