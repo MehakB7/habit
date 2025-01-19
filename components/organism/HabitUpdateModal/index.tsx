@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { lang } from '@/lib/lang';
 import { YES_NO_OPTIONS } from "@/lib/constants";
 import { HabitType } from "../HabitTable/types";
+import { useEffect } from "react";
 
 export function UpdateHabitModal({isOpen, onClose, notes, measurable, onHabitUpdate, value}: UpdateModalProps) {
   const {
@@ -25,6 +26,11 @@ export function UpdateHabitModal({isOpen, onClose, notes, measurable, onHabitUpd
       value: value,
     },
   });
+
+
+  useEffect(()=>{
+    reset({note: notes, value: value});
+  }, [isOpen])
 
   const onUpdate = (data: {note:string, value: number}) => {
     onHabitUpdate(data.note,  +data.value);

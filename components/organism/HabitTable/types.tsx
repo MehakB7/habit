@@ -36,7 +36,7 @@ export  type HabitCellProps ={
     value: number;
     onClick: () => void;
     color: string;
+    isCompleted: boolean;
     unit: string;
-    targetType: string;
     notes: string;
 }

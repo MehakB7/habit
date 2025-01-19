@@ -80,6 +80,15 @@ const HabitList = () => {
   };
 
 
+  const hasGoalAchieved = (targetType: string, target:string, value:number) => {
+    if(targetType === "At Most"){
+      return value <= +target;
+    }else{
+      return value >= +target;
+  }
+}
+
+
   return (
 <div  >
 <table className="w-full p-4 mt-8">
@@ -109,7 +118,7 @@ const HabitList = () => {
               {...habitValue}
                 measurable={habit.measurable}
                 unit={habit.unit || ""}
-                targetType={habit.targetType || ""}
+                isCompleted={habit.measurable == HabitType.YES ? hasGoalAchieved(habit.targetType||"", habit.target || "0", habitValue.value): true}
                 color={habit.color}
                  onClick={()=> {onHabitCellClick({
                   habitId: habit.id, date: new Date(currentYear, currentMonth, i + 1)
