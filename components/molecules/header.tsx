@@ -1,6 +1,7 @@
 import React from 'react';
 import { Logo } from '@/components/icons/logo';
 import Link from 'next/link';
+import ThemeMenu from './dropdownMenu/themeMenu';
 
 const Header = () => {
   return (
@@ -8,6 +9,7 @@ const Header = () => {
       <Link href="/">
           <Logo />
       </Link>
+      <ThemeMenu />
     </header>
   );
 };

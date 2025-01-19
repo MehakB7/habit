@@ -16,7 +16,8 @@ export const Logo = (props: SVGProps<SVGSVGElement>) => (
       y="65"
       fontFamily="'Brush Script MT', cursive"
       fontSize="50"
-      fill="white"
+      className="fill-accent-foreground"
+     
     >
       H
     </text>
