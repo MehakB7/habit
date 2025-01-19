@@ -1,21 +1,42 @@
-export  type HabitDataValue = {
-    date: string;
-    value: number;
-    note: string;
+export enum HabitType {
+  YES = "yes",
+  NO = "no",
 }
 
-export  type HabitDataType ={
-    name: string;
-    measurable: boolean;
-    color: string;
-    id: string;
-    createdAt: string;
-    value: Array<HabitDataValue>;
+
+export interface HabitDataValue {
+  date: string;
+  value: number;
+  note: string;
+}
+
+export interface HabitDataType {
+  id: string;
+  name: string;
+  question: string;
+  measurable: HabitType;
+  unit?: string;
+  target?: string;
+  targetType?: "At Most" | "At Least";
+  color: string;
+  createdAt: Date;
+  value: HabitDataValue[];
+}
+
+export interface CellCallbackData {
+  habitId: string;
+  date: Date;
+  value: number;
+  notes: string;
+  measurable: HabitType;
 }
 
 export  type HabitCellProps ={
-    measurable: boolean;
+    measurable: HabitType;
     value: number;
     onClick: () => void;
     color: string;
+    unit: string;
+    targetType: string;
+    notes: string;
 }
