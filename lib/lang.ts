@@ -1,5 +1,5 @@
 export const lang = {
-  APP_TITLE: "HABIT",
+  APP_TITLE: "DAILY HABIT",
   CREATE_HABIT_BUTTON: "Create Habit",
   CREATE_HABIT_TITLE: "Create Habit",
   CREATE_HABIT_DESCRIPTION: "Create a new habit to track your progress.",
@@ -22,4 +22,6 @@ export const lang = {
   VALUE_PLACEHOLDER: "eg: 50",
   SAVE_BUTTON: "Save",
   DID_YOU_CRUSH_IT_LABEL: "Did you crush it?",
+  EMPTY_STATE:
+    " Currently you don't have any habits. Click on the create button to add a new habit.",
 };

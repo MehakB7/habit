@@ -8,12 +8,7 @@ import { Trash2Icon } from "lucide-react";
 
 import { UpdateHabitModal } from "../HabitUpdateModal";
 import { useHabitContext } from "../HabitContext";
-
-/*TODO :
- 2. Add delete icon to remove the habit
- 3. fix the design so it looks more pretty
- 4. Add link to the habit detail page
-*/
+import EmptyTable from "../EmptyTable/noData";
 
 
 const HabitList = () => {
@@ -89,8 +84,13 @@ const HabitList = () => {
 }
 
 
+if(habits.length === 0){
+  return <EmptyTable />
+}
+
   return (
 <div  >
+  
 <table className="w-full p-4 mt-8">
   <thead>
     <tr>
