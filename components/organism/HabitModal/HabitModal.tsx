@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { v4 as uuidv4 } from 'uuid';
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,7 @@ import SelectBox from "@/components/molecules/selectBox";
 import { ErrorMessage } from "@/components/ui/errorMessage";
 import { lang } from '@/lib/lang';
 import { TARGET_TYPE_OPTIONS, COLOR_OPTIONS } from '@/lib/constants';
+import useLocalStorage from "@/lib/hooks/useLocalStorage";
 
 export function CreateHabitModal() {
   const {
@@ -26,6 +28,7 @@ export function CreateHabitModal() {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm({
     defaultValues: {
       name: "",
@@ -39,10 +42,22 @@ export function CreateHabitModal() {
     resolver: zodResolver(schema),
   });
 
+  const [habits, setHabits] = useLocalStorage('habits', []);
+
+
   const isMeasurable = watch("isMeasurable") === "yes";
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log(data);
+    const newHabit = {
+      ...data,
+      id: uuidv4(),
+      createdAt: new Date(),
+      value: [],
+    };
+    setHabits([...habits, newHabit]);
+    reset();
+
+    console.log(newHabit);
   };
 
   return (
@@ -70,7 +85,7 @@ export function CreateHabitModal() {
             </div>
 
             <div>
-              <Label htmlFor="description">{lang.HABIT_DESCRIPTION_LABEL}</Label>
+              <Label htmlFor="question">{lang.HABIT_DESCRIPTION_LABEL}</Label>
               <Controller
                 name="question"
                 control={control}
