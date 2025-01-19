@@ -7,7 +7,7 @@ import HabitList from '@/components/organism/HabitTable';
 const DailyHabits = () => {
   return (
     <div className='container mx-auto'>
-        <div className='flex justify-between items-center'>
+        <div className='flex justify-between items-center mt-4'>
         <h1 className='text-lg font-bold'>{lang.APP_TITLE}</h1>
         <CreateHabitModal/>
         </div>
