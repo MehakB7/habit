@@ -14,6 +14,8 @@ import { UpdateHabitModal } from "../HabitUpdateModal";
 import { useHabitContext } from "../HabitContext";
 import EmptyTable from "../EmptyTable/noData";
 import { ConfimationModal } from "@/components/molecules/confirmationModal";
+import { EditHabitModal } from "../HabitModal/EditModal";
+import { getDayName } from "@/lib/utils";
 
 const HabitList = () => {
   const currentMonth = new Date().getMonth();
@@ -22,12 +24,9 @@ const HabitList = () => {
   const { habits: localHabits, setHabits } = useHabitContext();
   const [open, setOpen] = React.useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
-  const [deleteHabitId, setDeleteHabitId] = React.useState("");
+  const [currentHabitId, setDeleteHabitId] = React.useState("");
+  const [editModal, setEditModal] = React.useState(false);
 
-  const getDayName = (date: Date) => {
-    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    return dayNames[date.getDay()];
-  };
   const [parent, habits, setAction] = useDragAndDrop<
     HTMLTableSectionElement,
     HabitDataType
@@ -57,7 +56,6 @@ const HabitList = () => {
 
   const onHabitUpdate = (note: string, value: number) => {
     if (!currentHabit) return;
-
     const updatedHabits = habits.map((habit) => {
       if (habit.id === currentHabit.habitId) {
         const date = currentHabit.date.toISOString().split("T")[0];
@@ -85,6 +83,11 @@ const HabitList = () => {
     setOpen(false);
   };
 
+  const onEdit = (habitId: string) => {
+    setEditModal(true);
+    setDeleteHabitId(habitId);
+  }
+
   const hasGoalAchieved = (
     targetType: string,
     target: string,
@@ -107,9 +110,23 @@ const HabitList = () => {
   };
 
   const onDelete = () => {
-    setHabits(habits.filter((h) => h.id !== deleteHabitId));
+    setHabits(habits.filter((h) => h.id !== currentHabitId));
     setDeleteModalOpen(false);
   };
+
+  const getEditDetails = () => {
+    
+    const {id, name, question, target, targetType, measurable, color } = habits.find((habit) => habit.id === currentHabitId) || {};
+    
+    return { id: id||"",
+      name: name||"",
+      question: question||"",
+      target: target||"",
+      targetType: targetType||undefined,
+      measurable: measurable|| HabitType.NO,
+      color: color||"rose"
+     };
+  }
 
   return (
     <div>
@@ -179,7 +196,7 @@ const HabitList = () => {
               <td>
                 <PencilIcon
                   className="w-4 h-4 cursor-pointer text-gray-400 hover:text-red-500  inline-flex mr-2"
-                  onClick={() => setOpen(true)}
+                  onClick={() => onEdit(habit.id)}
                 />
                 <Trash2Icon
                   className="w-4 h-4 cursor-pointer text-gray-400 hover:text-red-500  inline-flex "
@@ -207,6 +224,7 @@ const HabitList = () => {
         cancelText={"Cancel"}
         confirmText={"Delete"}
       />
+      <EditHabitModal open={editModal} setOpen={setEditModal}  {...getEditDetails()} />
     </div>
   );
 };

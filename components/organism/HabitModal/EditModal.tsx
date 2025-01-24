@@ -1,13 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { v4 as uuidv4 } from 'uuid';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -15,68 +13,48 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { schema } from "./validation";
 import { Label } from "@/components/ui/label";
-import RadioButton from "@/components/molecules/radioButton";
 import SelectBox from "@/components/molecules/selectBox";
 import { ErrorMessage } from "@/components/ui/errorMessage";
 import { lang } from '@/lib/lang';
 import { TARGET_TYPE_OPTIONS, COLOR_OPTIONS } from '@/lib/constants';
 import { useHabitContext } from "../HabitContext";
 import { HabitType } from "../HabitTable/types";
-import { useEffect, useState } from "react";
-
-export const defaultValue={
-  name: "",
-  question: "",
-  unit: "",
-  target: "0",
-  targetType: "At Most" as "At Most" | "At Least",
-  measurable: HabitType.NO,
-  color: "rose",
-}
-
-export function CreateHabitModal() {
-
-  const [open, setOpen] = useState(false);
+import { useEffect } from "react";
+import { EditHabitModalProps } from "./types";
+export function EditHabitModal(props: EditHabitModalProps) {
+  const { open, setOpen , id} = props;
   const {
     control,
     handleSubmit,
     formState: { errors },
-    watch,
     reset,
   } = useForm({
-    defaultValues: {...defaultValue},
+    defaultValues: { ...props},
     resolver: zodResolver(schema),
   });
 
 
   useEffect(()=>{
-    reset({...defaultValue});
+    reset({...props});
   },
   [open]);
   const { habits, setHabits } = useHabitContext();
 
-  const isMeasurable = watch("measurable") === HabitType.YES;
+  const isMeasurable =  props.measurable === HabitType.YES;
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-
-    const newHabit = {
-      ...data,
-      id: uuidv4(),
-      createdAt: new Date(),
-      value: [],
-      measurable: data.measurable as HabitType,
-    };
-    setHabits([...habits, newHabit]);
-    reset({...defaultValue,
-    },);
+    const updatedHabits = habits.map((habit) => {
+      if (habit.id === id) {
+        return { ...habit, ...data, measurable: data.measurable === "yes" ? HabitType.YES : HabitType.NO };
+      }
+      return habit;
+    });
+    setHabits(updatedHabits);
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" onClick={()=>setOpen(true)}>{lang.CREATE_HABIT_BUTTON}</Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{lang.CREATE_HABIT_TITLE}</DialogTitle>
@@ -105,28 +83,6 @@ export function CreateHabitModal() {
               />
               {errors.question && (
                 <ErrorMessage message={"" + errors?.question?.message} />
-              )}
-            </div>
-
-            <div>
-              <label>{lang.IS_MEASURABLE_LABEL}</label>
-              <Controller
-                name="measurable"
-                control={control}
-                render={({ field }) => (
-                  <RadioButton
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    options={[
-                      { value: "yes", label: lang.YES_OPTION },
-                      { value: "no", label: lang.NO_OPTION },
-                    ]}
-                    className="flex"
-                  />
-                )}
-              />
-              {errors.measurable && (
-                <ErrorMessage message={"" + errors?.measurable?.message} />
               )}
             </div>
 
