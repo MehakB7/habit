@@ -16,6 +16,7 @@ import EmptyTable from "../EmptyTable/noData";
 import { ConfimationModal } from "@/components/molecules/confirmationModal";
 import { EditHabitModal } from "../HabitModal/EditModal";
 import { getDayName } from "@/lib/utils";
+import Link from "next/link";
 
 const HabitList = () => {
   const currentMonth = new Date().getMonth();
@@ -129,7 +130,7 @@ const HabitList = () => {
   }
 
   return (
-    <div>
+    <>
       <table className="min-h-[124px] min-w-full mt-8">
         <thead className="bg-secondary">
           <tr className="bg-secondary rounded-lg">
@@ -159,7 +160,7 @@ const HabitList = () => {
               <td
                 className={`w-[200px] text-${habit.color}-500  text-left font-medium p-4 cursor-pointer`}
               >
-                {habit.name}
+                <Link href={`/${habit.id}`}>{habit.name}</Link>
               </td>
               {Array.from({ length: daysInMonth }, (_, i) => {
                 const habitValue = getHabitValue(
@@ -225,7 +226,7 @@ const HabitList = () => {
         confirmText={"Delete"}
       />
       <EditHabitModal open={editModal} setOpen={setEditModal}  {...getEditDetails()} />
-    </div>
+    </>
   );
 };
 export default dynamic(() => Promise.resolve(HabitList), { ssr: false });
