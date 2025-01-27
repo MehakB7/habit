@@ -39,4 +39,5 @@ export  type HabitCellProps ={
     isCompleted: boolean;
     unit: string;
     notes: string;
+    disabled: boolean;
 }

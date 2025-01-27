@@ -6,6 +6,13 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { calculateStates } from '@/lib/utils';
 
+
+//  TODO : 
+// Impement habit details page for measuraing habit
+// add trends map for the habit 
+// adding habit map details
+
+
 const HabitDetails = () => {
 
   const params = useParams();
@@ -30,9 +37,8 @@ const HabitDetails = () => {
 
   const color = `text-${habitData?.color}-500`
 
-
   return (
-    <div className='p-20'>
+    <div className='px-20 py-5'>
       <Link href={`/`}>
       <ArrowLeft className="w-8 h-8"  />
       </Link>

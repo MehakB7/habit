@@ -15,7 +15,7 @@ import { useHabitContext } from "../HabitContext";
 import EmptyTable from "../EmptyTable/noData";
 import { ConfimationModal } from "@/components/molecules/confirmationModal";
 import { EditHabitModal } from "../HabitModal/EditModal";
-import { getDayName } from "@/lib/utils";
+import { dayDiff, getDayName } from "@/lib/utils";
 import Link from "next/link";
 
 const HabitList = () => {
@@ -191,6 +191,7 @@ const HabitList = () => {
                         measurable: habit.measurable,
                       });
                     }}
+                    disabled ={new Date(currentYear, currentMonth, i + 1) > new Date() ||  dayDiff( new Date(currentYear, currentMonth, i + 1), new Date(habit.createdAt) ) < -1}
                   />
                 );
               })}

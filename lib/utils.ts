@@ -65,3 +65,8 @@ export const calculateStates = (habit: HabitDataType) => {
     streak,
   };
 };
+
+export const dayDiff = (date1: Date, date2: Date) => {
+  const days=  Math.floor((date1.getTime() - date2.getTime()) / (60*60*24*1000));
+  return days;
+}
